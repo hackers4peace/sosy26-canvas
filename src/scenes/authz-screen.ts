@@ -1,7 +1,8 @@
 import { beginSlide, all } from "@motion-canvas/core";
-import { Camera, makeScene2D, Rect } from "@motion-canvas/2d"
+import { makeScene2D, Rect } from "@motion-canvas/2d"
+import { FixedCamera } from "../fixed-camera";
 import { makeActor, actors } from "../model/actors"
-import { grid, makeScene } from '../model/layout';
+import { grid } from '../model/layout';
 import { makeMode, makeStorage, makeResource, makeNeed, makeManager, makeCombined } from "../model/storage";
 
 export default makeScene2D(function* (view) {
@@ -19,6 +20,9 @@ export default makeScene2D(function* (view) {
 
   const sm3 = makeStorage({ pentagon: false })
   sm3.position(grid(-2.9, -1))
+
+  const sm4 = makeStorage({ triangle: false })
+  sm4.position(grid(-3.2, - 1))
 
   const sme = makeActor(actors.sme)
   sme.position(grid(-1, 0))
@@ -99,9 +103,8 @@ export default makeScene2D(function* (view) {
   });
   screen.position(grid(0, 0))
 
-  const scene = makeScene([max, odi, app, repo, needs, screen, modes, muas, sm1, sm2, sm3, sme, suas, ss1, ss2, acme, auas, sa1, sa2])
-  const camera = new Camera({
-    scene
+  const camera = new FixedCamera({
+    children: [max, odi, app, repo, needs, screen, modes, muas, sm1, sm2, sm3, sm4, sme, suas, ss1, ss2, acme, auas, sa1, sa2]
   })
   view.add(camera)
 
@@ -147,6 +150,11 @@ export default makeScene2D(function* (view) {
   yield* all(
     muas.opacity(1, 1),
     suas.opacity(1, 1),
+  )
+  yield* beginSlide('Adjust Camera')
+  yield* all(
+    sm4.opacity(1, 1),
+    camera.centerOn(grid(-1, 0), 1),
   )
   yield* beginSlide('ACME stack')
   yield* all(
