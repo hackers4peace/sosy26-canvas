@@ -42,16 +42,7 @@ export default makeScene2D(function* (view) {
   const grantA2M2A = makeGrant({ shape: 'square' })
   grantA2M2A.position(grantA2M.position)
 
-  // const arrow = new Line({
-  //   lineDash: [20, 20],
-  //   startArrow: true,
-  //   endArrow: false,
-  //   stroke: "black",
-  //   lineWidth: 5,
-  //   arrowSize: 15,
-  //   opacity: 0,
-  //   ...shadow,
-  // })
+  // const arrow = makeArrow()
   // arrow.points([[50, 250], [50, 250]])
 
   const code = new Code({

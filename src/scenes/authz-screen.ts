@@ -1,11 +1,23 @@
 import { beginSlide, all } from "@motion-canvas/core";
-import { makeScene2D, Rect } from "@motion-canvas/2d"
+import { makeScene2D, Rect, Img } from "@motion-canvas/2d"
 import { FixedCamera } from "../fixed-camera";
 import { makeActor, actors } from "../model/actors"
 import { grid } from '../model/layout'
 import { makeMode, makeStorage, makeResource, makeNeed, makeManager, makeCombined } from "../model/storage"
 import { makeArrow } from "../model/arrow"
 import { makeGrant } from '../model/grants'
+
+function makeScope(width: number, height: number) {
+  return new Rect({
+    width,
+    height,
+    padding: 10,
+    radius: 8,
+    stroke: 'orange',
+    lineWidth: 4,
+    opacity: 0,
+  })
+}
 
 export default makeScene2D(function* (view) {
   const max = makeActor(actors.max)
@@ -129,6 +141,12 @@ export default makeScene2D(function* (view) {
   });
   screen.position(grid(0, -0.2))
 
+  const scopeMax = makeScope(180, 180)
+  scopeMax.position(sm3.position)
+
+  const scopeSME = makeScope(180, 180)
+  scopeSME.position(ss1.position)
+
   const am2 = makeArrow()
   const am3 = makeArrow()
   const am4 = makeArrow()
@@ -137,8 +155,17 @@ export default makeScene2D(function* (view) {
   const as3 = makeArrow()
   const aa2 = makeArrow()
 
+  const signpost = new Img({
+    src: 'https://cdn-icons-png.flaticon.com/512/1744/1744806.png',
+    width: 100,
+    height: 100,
+    opacity: 0
+  })
+  signpost.x(app.x() - 10)
+  signpost.y(app.y() - 200)
+
   const camera = new FixedCamera({
-    children: [max, odi, app, repo, needs, screen, modes, muas, sm1, sm2, sm3, sm4, gm2, gm3, gm4, sme, suas, ss1, ss2, ss3, gs1, gs2, gs3, acme, auas, sa1, sa2, ga2, am2, am3, am4, as1, as2, as3, aa2]
+    children: [max, odi, app, repo, needs, screen, modes, muas, sm1, sm2, sm3, sm4, gm2, gm3, gm4, sme, suas, ss1, ss2, ss3, gs1, gs2, gs3, acme, auas, sa1, sa2, ga2, am2, am3, am4, as1, as2, as3, aa2, scopeMax, scopeSME, signpost]
   })
   view.add(camera)
 
@@ -176,14 +203,14 @@ export default makeScene2D(function* (view) {
   )
   yield* beginSlide('SME stack')
   yield* all(
-    sme.opacity(1, 1),
+    sme.opacity(0.5, 1),
     ss1.opacity(0.5, 1),
     ss2.opacity(0.5, 1),
   )
   yield* beginSlide('Managers')
   yield* all(
     muas.opacity(1, 1),
-    suas.opacity(1, 1),
+    suas.opacity(0.5, 1),
   )
   yield* beginSlide('Current grants')
   yield* all(
@@ -199,6 +226,8 @@ export default makeScene2D(function* (view) {
     sm3.opacity(1, 1),
     ss1.opacity(1, 1),
     ss2.opacity(1, 1),
+    suas.opacity(1, 1),
+    sme.opacity(1, 1),
   )
   yield* beginSlide('Max more')
   yield* all(
@@ -211,10 +240,29 @@ export default makeScene2D(function* (view) {
   )
   yield* beginSlide('ACME stack')
   yield* all(
-    acme.opacity(1, 1),
-    auas.opacity(1, 1),
+    acme.opacity(0.5, 1),
+    auas.opacity(0.5, 1),
     sa1.opacity(0.5, 1),
     sa2.opacity(0.5, 1),
+  )
+  yield* beginSlide('scope registry')
+  yield* all(
+    scopeMax.opacity(1, 1),
+    scopeSME.opacity(1, 1),
+  )
+  yield* beginSlide('scope agent')
+  yield* all(
+    scopeMax.height(260, 1),
+    scopeMax.width(1000, 1),
+    scopeMax.x(scopeMax.x() + 200, 1),
+    scopeSME.height(260, 1),
+    scopeSME.width(1000, 1),
+    scopeSME.x(scopeSME.x() + 20, 1),
+  )
+  yield* beginSlide('scope all')
+  yield* all(
+    scopeMax.opacity(0, 1),
+    scopeSME.height(900, 1),
   )
   yield* beginSlide('Future grants')
   yield* all(
@@ -227,6 +275,12 @@ export default makeScene2D(function* (view) {
     sm4.opacity(1, 1),
     ss3.opacity(1, 1),
     sa2.opacity(1, 1),
+    acme.opacity(1, 1),
+    auas.opacity(1, 1),
+  )
+  yield* beginSlide('App directions')
+  yield* all(
+    signpost.opacity(1, 1)
   )
   yield* beginSlide('Discovery')
   am2.points([gm2.position(), gm2.position()])
