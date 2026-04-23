@@ -48,13 +48,13 @@ export default makeScene2D(function* (view) {
   const code = new Code({
     fontSize: 32,
     code: `\
-"@context": https://...
 grantee: Max
 grantedBy: SME
 dataOwner: SME
-hasStorage: https://eu.sme.ex
-registeredShapeTree: TaxFilings 🔷
-scopeOfGrant: AllFromRegistry
+shapeTree: TaxFilings 🔷
+storage: https://eu.sme.ex/
+registration: https://eu.sme.ex/june25/
+scope: AllFromRegistry
 accessMode: [ Read, Create ]`,
   })
 
@@ -72,14 +72,14 @@ accessMode: [ Read, Create ]`,
   const code2 = new Code({
     fontSize: 32,
     code: `\
-"@context": https://...
 grantee: App
 grantedBy: Max
 dataOwner: SME
-hasStorage: https://eu.sme.ex
-registeredShapeTree: TaxFilings 🔷
-scopeOfGrant: SelectedFromRegistry
-hasDataInstance:
+shapeTree: TaxFilings 🔷
+storage: https://eu.sme.ex/
+registration: https://eu.sme.ex/june25/
+scope: SelectedFromRegistry
+resource:
   - https://eu.sme.ex/june25
   - https://eu.sme.ex/july25
 accessMode: [ Read ]`,
@@ -152,14 +152,14 @@ accessMode: [ Read ]`,
   yield* all(
     max.opacity(1, 1),
     sme.opacity(1, 1),
-    code.selection(lines(1, 3), 1),
+    code.selection(lines(0, 2), 1),
   )
   yield* beginSlide('scope')
   yield* all(
     max.opacity(0.5, 1),
     sme.opacity(0.5, 1),
     smeStorage.opacity(1, 1),
-    code.selection(lines(4, 7), 1),
+    code.selection(lines(3, 7), 1),
   )
   yield* beginSlide('Reset')
   yield* all(
@@ -179,14 +179,19 @@ accessMode: [ Read ]`,
   yield* all(
     max.opacity(1, 1),
     app.opacity(1, 1),
-    code.selection(lines(1, 3), 1),
-    code2.selection(lines(1, 3), 1),
+    code.selection(lines(0, 2), 1),
+    code2.selection(lines(0, 2), 1),
   )
-  yield* beginSlide('Compare Scope')
+  yield* beginSlide('Compare Common')
   yield* all(
     max.opacity(0.5, 1),
     app.opacity(0.5, 1),
     smeStorage.opacity(1, 1),
+    code.selection(lines(3, 5), 1),
+    code2.selection(lines(3, 5), 1),
+  )
+  yield* beginSlide('Compare Scope')
+  yield* all(
     code.selection(lines(6, 7), 1),
     code2.selection(lines(6, 10), 1),
   )
